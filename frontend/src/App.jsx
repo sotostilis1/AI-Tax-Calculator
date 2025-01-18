@@ -1,35 +1,30 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Navbar, LogIn, CenterPage, Registration, ShowHistory, ProtectedRoutes } from "./components";
+import { BrowserRouter as Router, Routes, Route, BrowserRouter } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const [user, setUser] = useState(null); // Store the user data
+
+  // Log the current user state whenever it changes
+  useEffect(() => {
+    console.log("Current user state:", user);
+  }, [user]);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <BrowserRouter>
+      <Navbar user={user} setUser={setUser} />
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/" element={<LogIn setUser={setUser} />} />
+        <Route path="/login" element={<LogIn setUser={setUser} />} />
 
-export default App
+        {/* Protected Routes */}
+        <Route element={<ProtectedRoutes user={user} />}>
+          <Route path="/main" element={<CenterPage/>} />
+          <Route path="/registration" element={<Registration />} />
+          <Route path="/history" element={<ShowHistory />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
+}
