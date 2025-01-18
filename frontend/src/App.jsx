@@ -1,5 +1,5 @@
 import { Navbar, LogIn, CenterPage, Registration, ShowHistory, ProtectedRoutes } from "./components";
-import { BrowserRouter as Router, Routes, Route, BrowserRouter } from "react-router-dom";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 
 export default function App() {
@@ -17,11 +17,11 @@ export default function App() {
         {/* Public Routes */}
         <Route path="/" element={<LogIn setUser={setUser} />} />
         <Route path="/login" element={<LogIn setUser={setUser} />} />
+        <Route path="/registration" element={<Registration />} />
 
         {/* Protected Routes */}
         <Route element={<ProtectedRoutes user={user} />}>
           <Route path="/main" element={<CenterPage/>} />
-          <Route path="/registration" element={<Registration />} />
           <Route path="/history" element={<ShowHistory />} />
         </Route>
       </Routes>

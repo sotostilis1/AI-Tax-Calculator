@@ -51,36 +51,3 @@ async def fetch_chats_by_username(username: str):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-# # Request model for the API
-# class TaxCalculatorRequest(BaseModel):
-#     income_prompt: str
-#     residency_prompt: str
-#     tax_classification_prompt: str
-
-# @router.post("/", dependencies=[Depends(role_required(ALLOWED_ROLES["everyone"]))])
-# async def chat_with_tax_calculator(request: TaxCalculatorRequest):
-#     # Define the messages list dynamically from the request
-#     messages = [
-#         {"role": "system", "content": "You are a Tax Calculator based on 3 criteria: Annual income, Residency, Tax classification. Answer only with the owed amount"},
-#         {"role": "user", "content": request.income_prompt},
-#         {"role": "user", "content": request.residency_prompt},
-#         {"role": "user", "content": request.tax_classification_prompt}
-#     ]
-#     try:
-#         # Pass the messages list to the chat controller
-#         response = get_chatgpt_response(messages)
-#         return {"response": response}
-#     except Exception as e:
-#         return {"error": str(e)}

@@ -15,6 +15,7 @@ const ShowHistory = () => {
           <p className="text-center text-gray-500">No chat history available.</p>
         ) : (
           <div className="space-y-4">
+            {/* Display user's chats */}
             {chatHistory.map((chat, index) => (
               <div
                 key={chat.id || index}

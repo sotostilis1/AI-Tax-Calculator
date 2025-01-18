@@ -1,0 +1,34 @@
+version: "3.9"
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: backend
+    ports:
+      - "8000:8000" # Map backend API to port 8000
+    volumes:
+      - ./backend:/app # Bind-mount for live updates in development
+    env_file:
+      - ./backend/.env # Provide environment variables for the backend
+    depends_on:
+      - mongodb # Ensure MongoDB starts first
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: frontend
+    ports:
+      - "3000:80" # Serve React on port 3000
+    depends_on:
+      - backend # Ensure the backend is up before the frontend starts
+
+  mongodb:
+    image: mongo:6.0
+    container_name: mongodb
+    ports:
+      - "27017:27017" # Expose MongoDB's default port
+    volumes:
+      - mongo-data:/data/db # Persistent storage for MongoDB
+
+volumes:
+  mongo-data: # Named volume for MongoDB data persistence
