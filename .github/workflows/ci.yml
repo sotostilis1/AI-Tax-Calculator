@@ -41,13 +41,13 @@ jobs:
           python -m venv venv
           . venv/bin/activate
           pip install -r requirements.txt
-         env:  # Global environment variables for all steps
-           MONGO_URI: ${{ secrets.MONGO_URI }}
-           JWT_SECRET: ${{ secrets.JWT_SECRET }}
-           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-           DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+        env:  # Global environment variables for this step
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
 
-         # Debugging secrets
+      # Debugging secrets
       - name: Debug environment variables
         run: |
           echo "Checking environment variables..."
@@ -59,8 +59,7 @@ jobs:
           MONGO_URI: ${{ secrets.MONGO_URI }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          DATABASE_NAME: ${{ secrets.DATABASE_NAME }} 
-
+          DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
 
       - name: Run backend tests
         run: |
@@ -103,17 +102,12 @@ jobs:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           APP_ENV: ${{ secrets.APP_ENV }}
 
-
       # Debugging container health
       - name: Debug MongoDB health
         run: |
           echo "Checking MongoDB container health..."
           docker inspect --format='{{json .State.Health}}' $(docker ps -q --filter ancestor=mongo:6.0) || echo "Health check failed"
 
-
-
       # Health Check
       - name: Check App Health
         run: curl -f http://localhost:8000 || exit 1
-
-    
