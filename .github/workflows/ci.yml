@@ -1,0 +1,90 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo:6.0
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongo --eval 'db.runCommand({ ping: 1 })'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 3
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up Python for backend
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          python -m venv venv
+          . venv/bin/activate
+          pip install -r requirements.txt
+
+      env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+
+      - name: Run backend tests
+        run: |
+          cd backend
+          . venv/bin/activate
+          pytest
+
+      # Set up Node.js for frontend
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm install
+
+      - name: Build frontend
+        run: |
+          cd frontend
+          npm run build
+
+      - name: Run frontend tests
+        run: |
+          cd frontend
+          npm test
+
+      # Build Docker images
+      - name: Build Docker Images
+        run: docker-compose build
+
+      # Run containers
+      - name: Run Docker Containers
+        run: docker-compose up -d
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          APP_ENV: ${{ secrets.APP_ENV }}
+
+      # Health Check
+      - name: Check App Health
+        run: curl -f http://localhost:8000 || exit 1
