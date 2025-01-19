@@ -88,6 +88,15 @@ jobs:
           cd frontend
           npm test
 
+      # Create .env file
+      - name: Create .env file
+        run: |
+          echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> backend/.env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> backend/.env
+          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> backend/.env
+          echo "DATABASE_NAME=${{ secrets.DATABASE_NAME }}" >> backend/.env
+
+      # Set up Docker Compose
       - name: Set up Docker Compose
         run: |
           sudo apt-get update
