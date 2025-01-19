@@ -123,6 +123,17 @@ jobs:
           echo "Checking MongoDB container health..."
           docker inspect --format='{{json .State.Health}}' $(docker ps -q --filter ancestor=mongo:6.0) || echo "Health check failed"
 
-      # Health Check
+            
       - name: Check App Health
-        run: curl -f http://localhost:8000 || exit 1
+        run: |
+          for i in {1..10}; do
+            if curl -f http://localhost:8000; then
+              echo "Backend is ready"
+              exit 0
+            fi
+            echo "Waiting for backend to be ready..."
+            sleep 5
+          done
+          echo "Backend failed to start"
+          exit 1
+
