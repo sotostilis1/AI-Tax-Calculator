@@ -88,7 +88,11 @@ jobs:
           cd frontend
           npm test
 
-      # Build Docker images
+      - name: Set up Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+
       - name: Build Docker Images
         run: docker-compose build
 
