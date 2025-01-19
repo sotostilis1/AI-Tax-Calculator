@@ -114,6 +114,8 @@ jobs:
           MONGO_URI: ${{ secrets.MONGO_URI }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           APP_ENV: ${{ secrets.APP_ENV }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
 
       # Debugging container health
       - name: Debug MongoDB health
