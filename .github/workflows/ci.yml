@@ -23,7 +23,14 @@ jobs:
           --health-timeout 5s
           --health-retries 3
 
+    env:  # Global environment variables for all steps
+      MONGO_URI: ${{ secrets.MONGO_URI }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+
     steps:
+      # Checkout the code
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -39,12 +46,6 @@ jobs:
           python -m venv venv
           . venv/bin/activate
           pip install -r requirements.txt
-
-      env:
-          MONGO_URI: ${{ secrets.MONGO_URI }}
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
 
       - name: Run backend tests
         run: |
@@ -80,11 +81,12 @@ jobs:
       # Run containers
       - name: Run Docker Containers
         run: docker-compose up -d
-        env:
-          MONGO_URI: ${{ secrets.MONGO_URI }}
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          APP_ENV: ${{ secrets.APP_ENV }}
 
       # Health Check
       - name: Check App Health
         run: curl -f http://localhost:8000 || exit 1
+
+      # Cleanup Docker containers
+      - name: Cleanup Docker Containers
+        if: always()
+        run: docker-compose down
