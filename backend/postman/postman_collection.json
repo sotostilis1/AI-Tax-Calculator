@@ -1,0 +1,309 @@
+{
+	"info": {
+		"_postman_id": "0d579884-46df-4871-9328-7f6d8beec983",
+		"name": "Tax Calculator",
+		"_exporter_id": "38070345"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"admin\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						},
+						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000api//auth/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000api",
+							"path": [
+								"",
+								"auth",
+								"logout"
+							]
+						},
+						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"user1\",\n    \"password\": \"user1\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						},
+						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+					},
+					"response": []
+				}
+			],
+			"description": "#### **1\\. Register User**\n\n- **Endpoint**: `POST /auth/register`\n    \n- **Description**: Allows a new user to register by providing a username and password. The user is assigned the role `user` by default.\n    \n\n- **Request Body**:\n    \n\n``` json\n{\n  \"username\": \"string\",\n  \"password\": \"string\"\n}\n\n ```\n\n- **Response**:\n    \n\n``` json\n{\n  \"id\": \"uuid\",\n  \"username\": \"string\",\n  \"role\": \"user\"\n}\n\n ```\n\n#### **2\\. Login User**\n\n- **Endpoint**: `POST /auth/login`\n    \n- **Description**: Authenticates a user and issues a JWT token stored as a cookie.\n    \n- **Request Body**:\n    \n\n``` json\n{\n  \"username\": \"string\",\n  \"password\": \"string\"\n}\n\n ```\n\n- **Response**:\n    \n\n``` javascript\n{\n  \"message\": \"Login successful\",\n  \"id\": \"uuid\",\n  \"username\": \"string\",\n  \"role\": \"user\"\n}\n\n ```\n\n**Note**: Returns an error if the credentials are invalid.\n\n#### **3\\. Logout User**\n\n- **Endpoint**: `POST /auth/logout`\n    \n- **Description**: Logs the user out by clearing the JWT token from the cookies.\n    \n- **Response**:\n    \n\n``` json\n{\n  \"message\": \"Logout successful\"\n}\n\n ```"
+		},
+		{
+			"name": "chat",
+			"item": [
+				{
+					"name": "ask question",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"var template = `",
+									"<style type=\"text/css\">",
+									"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}",
+									"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}",
+									"    .tftable tr {background-color:#ffffff;}",
+									"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}",
+									"    .tftable tr:hover {background-color:#e0ffff;}",
+									"</style>",
+									"",
+									"<table class=\"tftable\" border=\"1\">",
+									"    <tr>",
+									"        <th>Detail</th>",
+									"    </tr>",
+									"    <tr>",
+									"        <td>{{response.detail}}</td>",
+									"    </tr>",
+									"</table>",
+									"`;",
+									"",
+									"function constructVisualizerPayload() {",
+									"    return {response: pm.response.json()}",
+									"}",
+									"",
+									"pm.visualizer.set(template, constructVisualizerPayload());"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"income\":35560,\n    \"residency\":\"Turkey\",\n    \"tax_class\":\"Civil Servant\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/chat/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"chat",
+								"create"
+							]
+						},
+						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+					},
+					"response": []
+				},
+				{
+					"name": "Get chat history for the user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/chat/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"chat",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all chats by username",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/chat/usr/user1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"chat",
+								"usr",
+								"user1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "#### **1\\. Create Chat**\n\n- **Endpoint**: `POST /chat/create`\n    \n- **Description**: Sends the user’s input (annual income, residency, tax classification) to ChatGPT and stores the chat in the database.\n    \n- **Request Body**:\n    \n\n``` json\n{\n  \"income\": \"number\",\n  \"residency\": \"string\",\n  \"tax_class\": \"string\"\n}\n\n\n ```\n\n- **Response**:\n    \n\n``` json\n{\n  \"message\": \"Chat saved successfully\",\n  \"chat\": {\n    \"id\": \"uuid\",\n    \"user_id\": \"uuid\",\n    \"income\": \"number\",\n    \"residency\": \"string\",\n    \"tax_class\": \"string\",\n    \"response\": \"string\"\n  }\n}\n\n\n ```\n\n**Notes**:\n\n- Role-based access: Users and admins can access this route.\n    \n- The backend ensures that the response is stored alongside the input in the database.\n    \n\n#### **2\\. Get All Chats for Logged-in User**\n\n- **Endpoint**: `GET /chat/`\n    \n- **Description**: Retrieves all chat records for the currently logged-in user.\n    \n- **Response**:\n    \n\n``` json\n[\n  {\n    \"id\": \"uuid\",\n    \"user_id\": \"uuid\",\n    \"income\": \"number\",\n    \"residency\": \"string\",\n    \"tax_class\": \"string\",\n    \"response\": \"string\"\n  }\n]\n\n\n ```\n\n**Notes**:\n\n- Role-based access: Only the authenticated user can access their chats.\n    \n\n#### **3\\. Get Chats by Username**\n\n- **Endpoint**: `GET /chat/usr/{username}`\n    \n- **Description**: Fetches all chats belonging to a user, identified by their username. This is restricted to admin users.\n    \n- **Path Parameter**:\n    \n    - `username`: The username of the user whose chats you want to retrieve.\n        \n- **Response**:\n    \n\n``` json\n[\n  {\n    \"id\": \"uuid\",\n    \"user_id\": \"uuid\",\n    \"income\": \"number\",\n    \"residency\": \"string\",\n    \"tax_class\": \"string\",\n    \"response\": \"string\"\n  }\n]\n\n\n ```\n\n**Notes**:\n\n- Role-based access: Only admins can access this route.\n    \n- Returns an error if the username does not exist."
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": "1"
+		},
+		{
+			"key": "base_url",
+			"value": "https://postman-rest-api-learner.glitch.me/"
+		}
+	]
+}
