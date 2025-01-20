@@ -38,7 +38,10 @@ app = FastAPI(lifespan=lifespan)
 app.include_router(user_router, prefix="/api/auth", tags=["User"])
 app.include_router(chat_router, prefix="/api/chat", tags=["Chat"])
 
-
+@app.get("/")
+def welcome():
+    return 'hi'
+    
 
 
 origins = [
