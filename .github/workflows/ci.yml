@@ -41,21 +41,17 @@ jobs:
           python -m venv venv
           . venv/bin/activate
           pip install -r requirements.txt
-        env:  # Global environment variables for this step
-          MONGO_URI: ${{ secrets.MONGO_URI }}
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
 
       # Debugging secrets
       - name: Debug environment variables
         run: |
           echo "Checking environment variables..."
-          echo "MONGO_URI: ${MONGO_URI}" | sed -e 's/\(.\)/\1 /g'
-          echo "MONGO_URI: ${MONGO_URI}" | sed -e 's/\(.\)/\1 /g'
-          echo "MONGO_URI: ${MONGO_URI}" | sed -e 's/\(.\)/\1 /g'
-          echo "MONGO_URI: ${MONGO_URI}" | sed -e 's/\(.\)/\1 /g'
-        
+          echo "MONGO_URI: ${{ secrets.MONGO_URI }}"
+          echo "JWT_SECRET: ${{ secrets.JWT_SECRET }}"
+          echo "OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}"
+          echo "DATABASE_NAME: ${{ secrets.DATABASE_NAME }}"
+
+      # Run backend tests
       - name: Run backend tests
         run: |
           cd backend
@@ -86,11 +82,12 @@ jobs:
       # Create .env file
       - name: Create .env file
         run: |
-          touch .env
-          echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> backend/.env
-          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> backend/.env
-          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> backend/.env
-          echo "DATABASE_NAME=${{ secrets.DATABASE_NAME }}" >> backend/.env
+          cat <<EOF > backend/.env
+          MONGO_URI=${{ secrets.MONGO_URI }}
+          JWT_SECRET=${{ secrets.JWT_SECRET }}
+          OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+          DATABASE_NAME=${{ secrets.DATABASE_NAME }}
+          EOF
 
       # Set up Docker Compose
       - name: Set up Docker Compose
@@ -106,12 +103,6 @@ jobs:
         run: |
           docker-compose up -d
           docker ps -a
-        env:
-          MONGO_URI: ${{ secrets.MONGO_URI }}
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          APP_ENV: ${{ secrets.APP_ENV }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
 
       # Debugging container health
       - name: Debug MongoDB health
@@ -121,4 +112,13 @@ jobs:
 
       # Health Check
       - name: Check App Health
-        run: curl -f http://localhost:8000 || exit 1
+        run: |
+          echo "Waiting for backend to be ready..."
+          for i in {1..10}; do
+            if curl -f http://localhost:8000; then
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "Backend failed to start"
+          exit 1
