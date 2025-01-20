@@ -51,16 +51,11 @@ jobs:
       - name: Debug environment variables
         run: |
           echo "Checking environment variables..."
-          echo "MONGO_URI: ${MONGO_URI:+set}"
-          echo "JWT_SECRET: ${JWT_SECRET:+set}"
-          echo "OPENAI_API_KEY: ${OPENAI_API_KEY:+set}"
-          echo "DATABASE_NAME: ${DATABASE_NAME:+set}"
-        env:
-          MONGO_URI: ${{ secrets.MONGO_URI }}
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
-
+          echo MONGO_URI | sed -e 's/\(.\)/\1 /g'
+          echo JWT_SECRET | sed -e 's/\(.\)/\1 /g'
+          echo OPENAI_API_KEY | sed -e 's/\(.\)/\1 /g'
+          echo DATABASE_NAME | sed -e 's/\(.\)/\1 /g'
+        
       - name: Run backend tests
         run: |
           cd backend
@@ -91,6 +86,7 @@ jobs:
       # Create .env file
       - name: Create .env file
         run: |
+          touch .env
           echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> backend/.env
           echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> backend/.env
           echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> backend/.env
@@ -123,17 +119,6 @@ jobs:
           echo "Checking MongoDB container health..."
           docker inspect --format='{{json .State.Health}}' $(docker ps -q --filter ancestor=mongo:6.0) || echo "Health check failed"
 
-            
+      # Health Check
       - name: Check App Health
-        run: |
-          for i in {1..10}; do
-            if curl -f http://localhost:8000; then
-              echo "Backend is ready"
-              exit 0
-            fi
-            echo "Waiting for backend to be ready..."
-            sleep 5
-          done
-          echo "Backend failed to start"
-          exit 1
-
+        run: curl -f http://localhost:8000 || exit 1
