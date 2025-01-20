@@ -4,11 +4,6 @@ services:
     build:
       context: ./backend
     container_name: backend
-    environment:
-      - MONGO_URI=${MONGO_URI}
-      - JWT_SECRET=${JWT_SECRET}
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - DATABASE_NAME=${DATABASE_NAME}
     ports:
       - "8000:8000" # Map backend API to port 8000
     volumes:
