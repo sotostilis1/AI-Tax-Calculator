@@ -14,7 +14,6 @@ def get_chatgpt_response(messages: list) -> str:
         response = openai.chat.completions.create(
             model="gpt-4o",
             messages=messages,
-            max_tokens=150,  
 
         )
 
