@@ -25,7 +25,7 @@ const LogIn = ({ setUser }) => {
         { withCredentials: true }
       );
 
-      console.log("Login response:", response.data);
+      //console.log("Login response:", response.data);
 
       setUser({
         id:response.data.id,

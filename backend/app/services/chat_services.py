@@ -24,9 +24,9 @@ def get_chatgpt_response(messages: list) -> str:
 
 
 def save_chat(user_id: str, income: float, residency: str, tax_class: str, response: str) -> Chat:
-    """
-    Saves a chat record to the database.
-    """
+    
+    #Saves a chat record to the database.
+    
     new_chat = Chat(
         user_id=user_id,
         income=income,
@@ -40,11 +40,11 @@ def save_chat(user_id: str, income: float, residency: str, tax_class: str, respo
 
 
 def handle_chat(user_id: str, income: float, residency: str, tax_class: str) -> dict:
-    """
-    Handles a new chat session, saves the request/response to the database.
-    """
+    
+    #Handles a new chat session, saves the request/response to the database.
+    
     messages = [
-        {"role": "system", "content": "You are a Tax Calculator based on 3 criteria: Annual income, Residency, Tax classification. Answer only with the owed amount."},
+        {"role": "system", "content": "You are a Tax Advisor based on 3 criteria: Annual income, Residency, Tax classification. Give the owed tax and give advice."},
         {"role": "user", "content": f"My annual income is: {income}€"},
         {"role": "user", "content": f"My residency is in: {residency}"},
         {"role": "user", "content": f"I am: {tax_class}"},
@@ -59,9 +59,9 @@ def handle_chat(user_id: str, income: float, residency: str, tax_class: str) -> 
 
 
 def get_all_chats(user_id: str) -> List[dict]:
-    """
-    Fetches all chats for a specific user.
-    """
+    
+    #Fetches all chats for a specific user.
+    
     chats = list(chat_collection.find({"user_id": user_id}))
     for chat in chats:
         chat["_id"] = str(chat["_id"])  # Convert ObjectId to string for JSON serialization
@@ -69,9 +69,9 @@ def get_all_chats(user_id: str) -> List[dict]:
 
 
 def get_chats_by_username(username: str) -> List[dict]:
-    """
-    Fetches all chats for the current logged in user
-    """
+    
+    #Fetches all chats for the current logged in user
+    
     user = user_collection.find_one({"username": username})
     if not user:
         raise HTTPException(status_code=404, detail=f"User with username '{username}' not found")

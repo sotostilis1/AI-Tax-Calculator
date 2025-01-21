@@ -10,16 +10,16 @@ const CenterPage = () => {
   const [errorField, setErrorField] = useState(""); // Field with error
   const [isResidencyValid, setIsResidencyValid] = useState(false); // Track residency validation
 
-  // Residency API fetcher
+  
   const handleResidencyBlur = async () => {
     if (!residency.trim()) {
       setErrorField("residency");
-      setIsResidencyValid(false); // Mark as invalid
+      setIsResidencyValid(false);
       return;
     }
 
     setLoading(true);
-    setErrorField(""); // Clear previous errors
+    setErrorField("");
 
     try {
       const response = await fetch(`https://restcountries.com/v3.1/name/${residency.trim()}`);
@@ -38,11 +38,11 @@ const CenterPage = () => {
       const countryName = data[0]?.name?.common;
 
       if (countryName) {
-        setResidency(String(countryName)); // Update residency with the correct name
-        setIsResidencyValid(true); // Mark as valid
+        setResidency(String(countryName));
+        setIsResidencyValid(true);
       } else {
         setErrorField("residency");
-        setIsResidencyValid(false); // Mark as invalid
+        setIsResidencyValid(false);
         throw new Error("Country not found. Please check the name and try again.");
       }
     } catch (error) {
@@ -52,10 +52,10 @@ const CenterPage = () => {
     }
   };
 
-  // Submit button logic
+  
   const handleSubmit = async () => {
     // Validate inputs
-    setErrorField(""); // Clear previous errors
+    setErrorField("");
     if (loading || !isResidencyValid) {
       setErrorField("residency");
       return;
@@ -133,8 +133,8 @@ const CenterPage = () => {
               value={residency}
               onChange={(e) => {
                 setResidency(e.target.value);
-                setErrorField(""); // Clear error when user types
-                setIsResidencyValid(false); // Reset validity
+                setErrorField("");
+                setIsResidencyValid(false);
               }}
               onBlur={handleResidencyBlur}
               placeholder="Type your country"

@@ -54,9 +54,9 @@ def login_user(username: str, password: str) -> JSONResponse:
     response.set_cookie(
         key="access_token",
         value=f"Bearer {access_token}",
-        httponly=True,  # Prevent JavaScript access for added security
-        secure=True,    # Use HTTPS for secure transmission
-        samesite="strict"  # Protect against CSRF attacks
+        httponly=True,
+        secure=True,
+        samesite="strict"
     )
     return response
 

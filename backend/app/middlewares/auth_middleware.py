@@ -1,8 +1,7 @@
 from fastapi import HTTPException, status, Request
 from app.config.jwt import verify_access_token
 from app.config.db import db
-from fastapi.security import HTTPBearer
-from fastapi import Depends, HTTPException, status
+from fastapi import HTTPException, status
 
 
 

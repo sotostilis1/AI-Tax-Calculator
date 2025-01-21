@@ -28,9 +28,9 @@ async def lifespan(app: FastAPI):
 
     except Exception as e:
         print("Error connecting to MongoDB:", e)
-        raise e  # Stop app startup if the connection fails
+        raise e 
     
-    yield  # Allow the application to run
+    yield 
 
 
 app = FastAPI(lifespan=lifespan)
@@ -42,8 +42,6 @@ app.include_router(chat_router, prefix="/api/chat", tags=["Chat"])
 def welcome():
     return 'hi'
     
-
-
 origins = [
     "http://localhost:5173",
     "http://localhost:3000"

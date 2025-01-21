@@ -42,27 +42,26 @@ const Navbar = ({ user, setUser }) => {
     const usernm = searchUsername.trim();
   
     if (!usernm) {
-      setError("Please enter a valid username."); // Set the error message
+      setError("Please enter a valid username.");
       return;
     }
   
-    setError(""); // Clear the error if input is valid
-    console.log("Search for:", searchUsername);
+    setError("");
+    //console.log("Search for:", searchUsername);
   
     try {
       const response = await api.get(`/chat/usr/${usernm}`, { withCredentials: true });
       const chatHistory = response.data;
   
       if (!chatHistory || chatHistory.length === 0) {
-        // If no chat history, clear the input and set the error
         setSearchUsername("");
         setError("No chat history found.");
         return;
       }
   
-      navigate("/history", { state: { chatHistory, usernm } }); // Navigate with data
+      navigate("/history", { state: { chatHistory, usernm } });
     } catch (error) {
-      setError("Failed to fetch chat history. Please try again."); // Set a generic error
+      setError("Failed to fetch chat history. Please try again.");
       if (error.response) {
         console.error(
           `Error fetching chat history: ${error.response.status} ${error.response.statusText}`,
@@ -79,7 +78,7 @@ const Navbar = ({ user, setUser }) => {
   
 
   return (
-    <div className="w-full fixed top-0 z-50 bg-white shadow-md h-[50px] flex items-center"> {/* Increased height */}
+    <div className="w-full fixed top-0 z-50 bg-white shadow-md h-[50px] flex items-center">
       <div className="flex justify-between items-center w-full md:max-w-[1240px] m-auto px-4">
         {/* Left Section: Mobile Menu Button */}
         <div className="flex items-center">
@@ -123,36 +122,33 @@ const Navbar = ({ user, setUser }) => {
           {user?.role === "admin" && (
             <div className="flex items-center mr-4">
             <input
-      type="text"
-      placeholder={error || "Search..."} // Show error if present, otherwise default placeholder
-      value={searchUsername}
-      onChange={(e) => {
-        setSearchUsername(e.target.value); // Update input value
-        setError(""); // Clear error when user types
-      }}
-      onFocus={() => setError("")} // Clear error when input gains focus
-      onBlur={() => {
-        // Reset placeholder and clear error when input loses focus
-        setError("");
-        if (!searchUsername.trim()) {
-          setSearchUsername(""); // Reset to empty string if the field is empty
-        }
-      }}
-      className={`border rounded-lg px-2 py-1 text-sm focus:outline-none focus:ring-2 ${
-        error ? "border-red-500 ring-red-500 placeholder-red-500" : "border-gray-300 focus:ring-blue-500"
-      }`}
-    />
-    <button
-      onClick={handleSearch}
-      className="ml-2 text-white p-2 rounded-full hover:bg-gray-300 focus:outline-none focus:ring-2"
-    >
+              type="text"
+              placeholder={error || "Search..."}
+              value={searchUsername}
+              onChange={(e) => {
+              setSearchUsername(e.target.value);
+              setError("");
+                               }
+                      }
+              onFocus={() => setError("")}
+              onBlur={() => {
+              setError("");
+              if (!searchUsername.trim()) {
+                setSearchUsername(""); // Reset to empty string if the field is empty
+                                          }
+                            }}
+              className={`border rounded-lg px-2 py-1 text-sm focus:outline-none focus:ring-2 ${
+              error ? "border-red-500 ring-red-500 placeholder-red-500" : "border-gray-300 focus:ring-blue-500"
+              }`}
+            />
+            <button
+             onClick={handleSearch}
+             className="ml-2 text-white p-2 rounded-full hover:bg-gray-300 focus:outline-none focus:ring-2"
+            >
               <img src={search} alt="Search" className="w-5 h-5" />
             </button>
           </div>
-          
-          
-          
-          
+      
           )}
 
           {user ? (
