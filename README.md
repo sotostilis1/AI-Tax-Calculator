@@ -91,9 +91,13 @@ The **user** collection is responsible for storing user credentials and roles.
 #### fields
 
 **_id**: A UUID that uniquely identifies the user. This is auto-generated.
+
 **username**: A unique string representing the user's name. 
+
 **password**: A hashed string representing the user's password, securely stored using bcrypt.
+
 **role**: A string that specifies the user's role. By default, all users are assigned the role "user". The only exception is the admin account, which is created automatically with the role "admin".
+
 
 **Admin Account**:
 At the backend's initialization, an admin account is created automatically with the following credentials:
@@ -117,11 +121,17 @@ The chats collection stores information about user interactions with the AI tax 
 #### fields
 
 **_id**: A UUID that uniquely identifies the chat entry. This is auto-generated.
+
 **user_id**: The UUID of the user who initiated the chat. This acts as a reference to the users collection.
+
 **income**:  A number representing the user's annual income.
+
 **residency**: A string specifying the user's country of residency.
+
 **tax_class**: A string indicating the user's tax classification (e.g., worker, employee, etc.).
+
 **response**: A string containing the AI's response based on the provided data.
+
 
 Example: 
 ```console
@@ -141,10 +151,10 @@ The API documentation is available as a Postman collection. You can download it 
 
 ### Importing the Collection
 
-    Download the collection from the link above.
-    Open Postman and click Import in the top-left corner.
-    Select the .json file and click Import.
-    The collection will appear in your workspace, ready to use.
+  1. Download the collection from the link above.
+  2. Open Postman and click Import in the top-left corner.
+  3. Select the .json file and click Import.
+  4. The collection will appear in your workspace, ready to use.
 
 
 
