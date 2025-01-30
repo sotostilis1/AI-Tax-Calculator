@@ -42,15 +42,7 @@ jobs:
           . venv/bin/activate
           pip install -r requirements.txt
 
-      # Debugging secrets
-      - name: Debug environment variables
-        run: |
-          echo "Checking environment variables..."
-          echo "MONGO_URI: ${{ secrets.MONGO_URI }}"
-          echo "JWT_SECRET: ${{ secrets.JWT_SECRET }}"
-          echo "OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}"
-          echo "DATABASE_NAME: ${{ secrets.DATABASE_NAME }}"
-
+      
       # Run backend tests
       - name: Run backend tests
         run: |
@@ -87,6 +79,8 @@ jobs:
           JWT_SECRET=${{ secrets.JWT_SECRET }}
           OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
           DATABASE_NAME=${{ secrets.DATABASE_NAME }}
+          ADMIN_NAME=${{ secrets.ADMIN_NAME }}
+          ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }}
           EOF
 
       # Set up Docker Compose
