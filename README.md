@@ -12,7 +12,7 @@
 4. [OpenAI API](#openai-api)
 5. [Database Collections](#database-collections)
 6. [REST API Documentation](#rest-api-documentation)
-7. [.env File Setup](#.env-file-setup)
+7. [.env File Setup](#env-file-setup)
 8. [How to Run](#how-to-run)
 
 ## Introduction
@@ -170,6 +170,10 @@ The application requires the following environment variables to be set in a `.en
 - **OPENAI_API_KEY**: Used to communicate with the OpenAI Chat Completions API. If missing, the app will not be able to generate a response.
 
 - **DATABASE_NAME**: The name of the database used in MongoDB. This allows the app to connect to the correct database instance.
+
+- **ADMIN_NAME**: The default admin name you prefer
+
+- **ADMIN_PASSWORD**: The default admin password you prefer
 
 ```
 
