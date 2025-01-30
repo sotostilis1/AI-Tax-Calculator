@@ -6,7 +6,7 @@ from app.config.db import client
 from app.routes.user_routes import router as user_router
 from app.routes.chat_routes import router as chat_router
 from app.config.db import db
-from app.services.auth_services import register_user
+from app.services.auth_services import createAdmin
 
 user_collection = db["user"]
 
@@ -19,12 +19,7 @@ async def lifespan(app: FastAPI):
         client.admin.command("ping")
         print("MongoDB connection successful!")
 
-        # Check if an admin user exists. if not, create it
-        admin_exists = user_collection.find_one({"role": "admin"})
-        if not admin_exists:
-            print("Admin user not found. Creating default admin user.")
-            register_user(username="admin", password="admin", role="admin")
-            print("Default admin user created: username='admin', password='admin'")
+        createAdmin()
 
     except Exception as e:
         print("Error connecting to MongoDB:", e)

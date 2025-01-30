@@ -4,6 +4,11 @@ from fastapi.responses import JSONResponse
 from app.models.user import User
 from app.config.db import db
 from app.config.jwt import create_access_token
+from dotenv import load_dotenv
+import os
+
+# Load environment variables from .env
+load_dotenv()
 
 # MongoDB collection
 user_collection = db["user"]
@@ -69,5 +74,20 @@ def logout_user() -> JSONResponse:
         samesite="strict"    
     )
     return response
+
+def createAdmin():
+        admin = os.getenv("ADMIN_NAME")
+        password = os.getenv("ADMIN_PASSWORD")
+
+        if not admin or not password:
+         raise RuntimeError("Error: ADMIN_NAME and ADMIN_PASSWORD must be set in environment variables.")
+
+        
+        # Check if an admin user exists. if not, create it
+        admin_exists = user_collection.find_one({"role": "admin"})
+        if not admin_exists:
+            print("Admin user not found. Creating default admin user.")
+            register_user(username=admin, password=password, role="admin")
+            print("Default admin user created")
 
 
